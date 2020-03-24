@@ -1,0 +1,7 @@
+
+
+php artisan serve
+php artisan serve –port=8080
+
+Laravel Mix will copy the folders from resources to public folder.
+npm run watch
