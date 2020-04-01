@@ -11,12 +11,16 @@
 |
 */
 
-require 'admin.php';
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+//Route::view('/admin', 'admin.dashboard.index');
+
+
+
+Route::view('/', 'site.pages.homepage');
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-//Route::view('/admin', 'admin.dashboard.index');
+require 'admin.php';
