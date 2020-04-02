@@ -8,6 +8,7 @@ namespace App\Contracts;
  */
 interface CategoryContract
 {
+
     /**
      * @param string $order
      * @param string $sort
@@ -39,4 +40,15 @@ interface CategoryContract
      * @return bool
      */
     public function deleteCategory($id);
+
+    /**
+     * @return mixed
+     */
+    public function treeList();
+
+    /**
+    * @param $slug
+    * @return mixed
+    */
+    public function findBySlug($slug);
 }
