@@ -25,6 +25,7 @@ class ViewComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+//        dd(Category::orderByRaw('-name ASC')->get()->nest()->toArray());
         View::composer('site.partials.nav', function ($view) {
             $view->with('categories', Category::orderByRaw('-name ASC')->get()->nest());
         });

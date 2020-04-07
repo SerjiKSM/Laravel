@@ -27,13 +27,20 @@
                         </tr>
                         </thead>
                         <tbody>
+<!--                        --><?php //dd($categories) ?>
+<!--                        --><?php //dd($categories[10]->parent->name) ?>
                         @foreach($categories as $category)
                             @if ($category->id != 1)
                                 <tr>
                                     <td>{{ $category->id }}</td>
                                     <td>{{ $category->name }}</td>
                                     <td>{{ $category->slug }}</td>
-                                    <td>{{ $category->parent->name }}</td>
+
+                                    @if(!empty($category->parent_id))
+                                        <td>{{ $category->parent->name }}</td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                     <td class="text-center">
                                         @if ($category->featured == 1)
                                             <span class="badge badge-success">Yes</span>

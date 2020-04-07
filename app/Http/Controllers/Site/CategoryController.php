@@ -25,7 +25,6 @@ class CategoryController extends Controller
     public function show($slug)
     {
         $category = $this->categoryRepository->findBySlug($slug);
-        dd($category);
 
         return view('site.pages.category', compact('category'));
     }
@@ -43,7 +42,7 @@ class CategoryController extends Controller
                             . $this->categoryTree() .
                         "</select>";
 
-        return view('site.pages.category', compact('menus', 'selectMenus'));
+        return view('site.pages.category_recursive', compact('menus', 'selectMenus'));
 
     }
 
