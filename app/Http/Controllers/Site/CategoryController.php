@@ -42,7 +42,12 @@ class CategoryController extends Controller
                             . $this->categoryTree() .
                         "</select>";
 
-        return view('site.pages.category_recursive', compact('menus', 'selectMenus'));
+        $categories = Category::orderByRaw('-name ASC')->get()->nest();
+//        dd($categories);
+        $treeMenus = '';
+        $treeMenus .= $this->treeMenus($categories);
+
+        return view('site.pages.category_recursive', compact('menus', 'selectMenus', 'treeMenus'));
 
     }
 
@@ -100,5 +105,22 @@ class CategoryController extends Controller
         return $output;
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function treeMenus(Collection $categories)
+    {
+        $treeMenus = '';
+        foreach ($categories as $cat) {
+            $treeMenus .= '<li><a href="">' . $cat['name'] . '</a></li>';
+            foreach ($cat->items as $category) {
 
+                $treeMenus .= '<li><a href="">' . $category['name'] . '</a>';
+
+                    $treeMenus .= '<ul class="dropdown">'
+                        . $this->treeMenus($category->items)
+                        . '</ul>';
+
+                $treeMenus .= '</li>';
+            }
+        }
+        return $treeMenus;
+    }
 }
