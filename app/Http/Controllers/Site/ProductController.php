@@ -36,6 +36,7 @@ class ProductController extends Controller
         $options = $request->except('_token', 'productId', 'price', 'qty');
 
         Cart::add(uniqid(), $product->name, $request->input('price'), $request->input('qty'), $options);
+//        Cart::add($request->input('productId'), $product->name, $request->input('price'), $request->input('qty'), $options);
 
         return redirect()->back()->with('message', 'Item added to cart successfully.');
     }
