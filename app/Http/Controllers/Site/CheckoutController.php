@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Site;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contracts\OrderContract;
+use App\Services\PayPalService;
 
 class CheckoutController extends Controller
 {
     protected $orderRepository;
+    protected $payPal;
 
-    public function __construct(OrderContract $orderRepository)
+    public function __construct(OrderContract $orderRepository, PayPalService $payPal)
     {
         $this->orderRepository = $orderRepository;
+        $this->payPal = $payPal;
     }
 
     public function getCheckout()
@@ -26,6 +29,29 @@ class CheckoutController extends Controller
         // request validation which I leave it to you
         $order = $this->orderRepository->storeOrderDetails($request->all());
 
-        dd($order);
+        // You can add more control here to handle if the order
+        // is not stored properly
+        if ($order) {
+//            $this->payPal->processPayment($order); // will error need to do registration on PayPal
+        }
+
+        return redirect()->back()->with('message','Order not placed');
+    }
+
+    public function complete(Request $request)
+    {
+        $paymentId = $request->input('paymentId');
+        $payerId = $request->input('PayerID');
+
+        $status = $this->payPal->completePayment($paymentId, $payerId);
+
+        $order = Order::where('order_number', $status['invoiceId'])->first();
+        $order->status = 'processing';
+        $order->payment_status = 1;
+        $order->payment_method = 'PayPal -'.$status['salesId'];
+        $order->save();
+
+        Cart::clear();
+        return view('site.pages.success', compact('order'));
     }
 }
