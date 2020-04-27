@@ -15,3 +15,5 @@ yarn-error.log
 /public/backend
 /public/frontend
 /public/uploads
+
+.idea/workspace.xml
